@@ -1,0 +1,239 @@
+The New Complaint page still looks like a traditional government form.
+
+Transform it into an AI-first complaint submission experience.
+
+Remove the static form design and redesign the page as an AI Assistant Workflow.
+
+================================================
+
+STEP 1 — INPUT METHODS
+
+Create 3 tabs:
+
+1. Text Complaint
+2. Voice Complaint
+3. Image Complaint
+
+Only one tab active at a time.
+
+================================================
+
+TEXT COMPLAINT TAB
+
+Large AI chat-style input.
+
+Placeholder:
+
+"Describe the issue in your own words..."
+
+Example:
+
+"There is a huge pothole outside XYZ college causing traffic and accidents."
+
+As user types:
+
+Show live AI analysis.
+
+================================================
+
+VOICE COMPLAINT TAB
+
+Add:
+
+- Start Recording
+- Stop Recording
+- Upload Audio
+
+Supported Languages:
+
+- English
+- Hindi
+- Marathi
+
+After recording show:
+
+Transcript
+
+Detected Language
+
+Translated Complaint
+
+================================================
+
+IMAGE COMPLAINT TAB
+
+Add:
+
+Drag & Drop Upload Area
+
+Camera Upload
+
+Gallery Upload
+
+After upload show:
+
+Image Preview
+
+AI Detection Card
+
+Issue Type
+
+Severity
+
+Confidence Score
+
+Department
+
+================================================
+
+STEP 2 — LIVE AI ANALYSIS PANEL
+
+Create right-side AI Assistant panel.
+
+Display in real time:
+
+Detected Issue
+
+Suggested Department
+
+Severity
+
+Priority
+
+Confidence Score
+
+Ward
+
+Estimated Resolution Time
+
+Example:
+
+Issue:
+Pothole
+
+Department:
+Public Works
+
+Severity:
+High
+
+Priority:
+Critical
+
+Confidence:
+97%
+
+Expected Resolution:
+5 Days
+
+================================================
+
+STEP 3 — GENERATED COMPLAINT
+
+AI automatically generates:
+
+Professional Complaint Title
+
+Formal Complaint Draft
+
+Citizen Summary
+
+Department Notes
+
+Display inside beautiful AI card.
+
+Allow Edit.
+
+================================================
+
+STEP 4 — MAP LOCATION PICKER
+
+Replace ward dropdown.
+
+Use interactive map.
+
+Features:
+
+- Current Location
+- Search Address
+- Pin Location
+
+Show coordinates.
+
+================================================
+
+STEP 5 — DUPLICATE DETECTION
+
+If similar complaint exists nearby:
+
+Show alert.
+
+Example:
+
+"12 similar complaints already exist nearby."
+
+Options:
+
+- Upvote Existing Complaint
+- Subscribe For Updates
+- Create New Complaint
+
+================================================
+
+STEP 6 — COMMUNITY IMPACT
+
+Show:
+
+Affected Citizens
+
+Nearby Complaints
+
+Risk Score
+
+AI Impact Assessment
+
+================================================
+
+STEP 7 — SUBMIT SCREEN
+
+Before submission show:
+
+AI Review Summary
+
+Issue
+
+Department
+
+Priority
+
+Severity
+
+Expected Resolution
+
+Confidence
+
+Then submit.
+
+================================================
+
+UI REQUIREMENTS
+
+Inspired by:
+
+- ChatGPT
+- Stripe
+- Linear
+- Notion
+
+Use:
+
+- Glassmorphism
+- Gradient cards
+- AI badges
+- Framer Motion animations
+- Interactive timeline
+- Smart city visuals
+
+The page should feel like an AI assistant helping citizens rather than a government form.
+
+Make it look like a national-level hackathon winning product.

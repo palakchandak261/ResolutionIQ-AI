@@ -1,0 +1,395 @@
+You are a Principal Software Engineer, Product Architect, Smart City Consultant, and YC Startup Founder.
+
+Build a production-grade AI-powered GovTech SaaS platform called:
+
+RESOLUTIONIQ AI
+
+Tagline:
+"File It Right. Get It Fixed."
+
+================================================
+
+REAL-WORLD PROBLEM
+
+Across cities and municipalities, citizens face major difficulties while reporting civic problems.
+
+Examples:
+
+• Potholes remain unrepaired for months
+• Garbage dumping complaints are ignored
+• Water leakages waste thousands of liters daily
+• Broken streetlights create safety risks
+• Illegal constructions continue unchecked
+• Sewage overflow creates health hazards
+
+The core issue is not that governments don't receive complaints.
+
+The real issue is:
+
+1. Citizens don't know which department is responsible.
+2. Complaints are written poorly and lack actionable details.
+3. Multiple duplicate complaints flood the system.
+4. Governments cannot prioritize issues effectively.
+5. Language barriers prevent proper communication.
+6. No predictive intelligence exists to identify infrastructure failures before they occur.
+
+As a result:
+
+• Public trust decreases.
+• Municipal resources are wasted.
+• Infrastructure deteriorates faster.
+• Resolution times increase.
+• Citizens stop reporting problems.
+
+================================================
+
+PROPOSED SOLUTION
+
+ResolutionIQ AI is an AI-powered Civic Intelligence Platform.
+
+It acts as an intelligent layer between citizens and governments.
+
+Instead of simply collecting complaints, it:
+
+• Understands complaints
+• Routes complaints
+• Prioritizes complaints
+• Predicts infrastructure risks
+• Helps governments take action faster
+
+================================================
+
+TARGET USERS
+
+1. Citizens
+
+Needs:
+- Easy reporting
+- Language support
+- Transparency
+- Faster resolution
+
+2. Government Officers
+
+Needs:
+- Better complaint quality
+- Faster routing
+- Workload management
+- Analytics
+
+3. City Administrators
+
+Needs:
+- Smart city insights
+- Resource planning
+- SLA monitoring
+- Policy decisions
+
+================================================
+
+REAL-WORLD WORKFLOW
+
+SCENARIO 1
+
+Citizen notices pothole.
+
+Current System:
+
+Citizen
+→ Calls wrong department
+→ Complaint lost
+→ No action
+
+ResolutionIQ:
+
+Citizen uploads photo
+
+AI detects:
+"Pothole"
+
+AI assigns:
+Public Works Department
+
+AI generates:
+Formal complaint
+
+AI estimates:
+Resolution timeline
+
+AI tracks status
+
+================================================
+
+SCENARIO 2
+
+Citizen records voice complaint.
+
+Hindi:
+
+"Hamare area mein teen din se paani leak ho raha hai."
+
+System:
+
+Voice
+→ Speech-to-Text
+→ Language Detection
+→ Translation
+→ Complaint Generation
+→ Routing
+
+Result:
+
+Complaint automatically reaches Water Department.
+
+================================================
+
+SCENARIO 3
+
+Government receives hundreds of complaints.
+
+AI:
+
+Classifies complaints
+
+Groups duplicates
+
+Assigns priority
+
+Suggests actions
+
+Reduces manual effort.
+
+================================================
+
+SCENARIO 4
+
+Predictive Infrastructure Intelligence
+
+Reports:
+
+3 potholes
++
+2 water leakage complaints
+
+within 50 meters
+
+AI predicts:
+
+Possible underground pipe failure
+
+Creates:
+
+Infrastructure Risk Alert
+
+before major damage occurs.
+
+================================================
+
+PLATFORM MODULES
+
+1. Citizen Transparency Portal
+
+Features:
+
+- Register/Login
+- Complaint Submission
+- Voice Complaints
+- Image Complaints
+- Complaint Timeline
+- Complaint Tracking
+- Notifications
+- Co-Voting System
+
+================================================
+
+2. AI Complaint Intelligence Engine
+
+Features:
+
+- Complaint Classification
+- Department Routing
+- Severity Prediction
+- Duplicate Detection
+- AI Complaint Drafting
+
+Outputs:
+
+Department
+Priority
+Severity
+Confidence Score
+
+================================================
+
+3. Computer Vision Module
+
+Detect:
+
+- Potholes
+- Garbage Dumps
+- Water Leakages
+- Broken Streetlights
+- Illegal Construction
+- Sewage Overflow
+
+Return:
+
+Issue Type
+Severity
+Confidence
+
+================================================
+
+4. Voice Intelligence Module
+
+Support:
+
+- English
+- Hindi
+- Marathi
+- Regional Languages
+
+Workflow:
+
+Audio
+→ Whisper
+→ Transcript
+→ Translation
+→ Complaint Draft
+
+================================================
+
+5. Government Command Center
+
+Features:
+
+- Complaint Queue
+- SLA Monitoring
+- AI Recommendations
+- Department Workload
+- Incident Drawer
+- Assignment Management
+
+================================================
+
+6. Civic Intelligence Dashboard
+
+Features:
+
+- Complaint Heatmaps
+- Ward Analytics
+- Department Load
+- Risk Zones
+- Resolution Analytics
+- Infrastructure Trends
+
+================================================
+
+7. Predictive Analytics Engine
+
+Predict:
+
+- Road Failure Risk
+- Water Infrastructure Risk
+- SLA Breaches
+- Complaint Escalations
+
+================================================
+
+8. Admin Control Center
+
+Features:
+
+- User Management
+- Department Management
+- Analytics
+- System Settings
+
+================================================
+
+TECH STACK
+
+Frontend
+
+- React.js
+- TypeScript
+- Tailwind CSS
+- ShadCN UI
+- Framer Motion
+- React Router
+- Chart.js
+
+Backend
+
+- Node.js
+- Express.js
+- MongoDB Atlas
+
+AI
+
+- Gemini API
+- Gemini Vision
+- Whisper API
+
+Maps
+
+- Google Maps API
+
+Deployment
+
+- Vercel
+- Render
+
+================================================
+
+DESIGN SYSTEM
+
+Inspired by:
+
+- Palantir Foundry
+- Stripe
+- Linear
+- Notion
+
+Use:
+
+- Glassmorphism
+- KPI Cards
+- AI Confidence Badges
+- Severity Badges
+- Animated Metrics
+- Modern Data Tables
+- Interactive Heatmaps
+- Smart City Visualizations
+
+================================================
+
+SUCCESS METRICS
+
+Citizens:
+
+- Faster complaint filing
+- Better transparency
+- Higher satisfaction
+
+Government:
+
+- Reduced complaint misrouting
+- Faster resolution
+- Better resource allocation
+
+City:
+
+- Infrastructure intelligence
+- Predictive maintenance
+- Data-driven governance
+
+================================================
+
+EXPECTED IMPACT
+
+ResolutionIQ AI transforms cities from reactive problem-solving to proactive infrastructure intelligence.
+
+Instead of merely managing complaints, cities gain an AI-powered operating system for public infrastructure.
+
+Generate a complete frontend application with all pages, dashboards, components, navigation, routing, mock APIs, realistic data, modern UI, and investor-grade visual quality.

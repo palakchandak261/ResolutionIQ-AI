@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+build/
+.tsbuildinfo
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vite / editor
+.vite/
+.cache/
+
+# Uploads (user-generated content)
+resolutioniq-backend/backend/uploads/images/
+resolutioniq-backend/backend/uploads/voice/
