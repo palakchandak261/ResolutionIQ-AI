@@ -76,7 +76,39 @@ const SEV_COLOR: Record<string, string> = {
   Low: "text-green-400 bg-green-500/15 border-green-500/30",
 };
 
-// ─── AI simulation ────────────────────────────────────────────────────────────
+// ─── Real Gemini AI call via backend ─────────────────────────────────────────
+
+async function callBackendAI(text: string, ward?: string): Promise<AiAnalysis | null> {
+  try {
+    const res = await fetch("/api/ai/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description: text, ward }),
+    });
+    if (!res.ok) throw new Error(`AI API ${res.status}`);
+    const data = await res.json();
+    return {
+      issueType: data.issueType,
+      department: data.department,
+      severity: data.severity,
+      priority: data.priority,
+      confidence: data.confidence,
+      ward: ward || data.ward,
+      estimatedDays: data.estimatedDays,
+      riskScore: data.riskScore,
+      affectedCitizens: data.affectedCitizens,
+      generatedTitle: data.generatedTitle,
+      formalDraft: data.formalDraft,
+      citizenSummary: data.citizenSummary,
+      departmentNotes: data.departmentNotes,
+    };
+  } catch (err) {
+    console.warn("Backend AI call failed, using local fallback:", err);
+    return null;
+  }
+}
+
+// ─── Local fallback (used only if backend AI is unavailable) ──────────────────
 
 function detectCategory(text: string): string {
   const lower = text.toLowerCase();
@@ -232,15 +264,21 @@ function AnalysisPanel({ analysis, loading }: { analysis: AiAnalysis | null; loa
 
 function TextTab({ onAnalysis }: { onAnalysis: (text: string, a: AiAnalysis | null) => void }) {
   const [text, setText] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function handleChange(val: string) {
     setText(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     if (val.trim().length < 15) { onAnalysis(val, null); return; }
-    debounceRef.current = setTimeout(() => {
-      onAnalysis(val, buildAnalysis(val));
-    }, 600);
+    debounceRef.current = setTimeout(async () => {
+      setAiLoading(true);
+      // Try real Gemini AI first, fall back to local if unavailable
+      const aiResult = await callBackendAI(val);
+      const analysis = aiResult ?? buildAnalysis(val);
+      setAiLoading(false);
+      onAnalysis(val, analysis);
+    }, 800);
   }
 
   return (
@@ -255,8 +293,8 @@ function TextTab({ onAnalysis }: { onAnalysis: (text: string, a: AiAnalysis | nu
         {text.length > 15 && (
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="absolute bottom-3 right-3">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/20 border border-sky-500/30">
-              <Sparkles className="w-3 h-3 text-sky-400" />
-              <span className="text-[10px] font-mono text-sky-400">AI analyzing...</span>
+              {aiLoading ? <Loader2 className="w-3 h-3 text-sky-400 animate-spin" /> : <Sparkles className="w-3 h-3 text-sky-400" />}
+              <span className="text-[10px] font-mono text-sky-400">{aiLoading ? "Gemini analyzing..." : "AI analyzed ✓"}</span>
             </div>
           </motion.div>
         )}
@@ -288,12 +326,15 @@ function VoiceTab({ onAnalysis }: { onAnalysis: (text: string, a: AiAnalysis | n
     rec.continuous = true;
     rec.interimResults = true;
     rec.lang = language === "Hindi" ? "hi-IN" : language === "Marathi" ? "mr-IN" : "en-IN";
-    rec.onresult = (e: any) => {
+    rec.onresult = async (e: any) => {
       const t = Array.from(e.results).map((r: any) => r[0].transcript).join(" ");
       setTranscript(t);
       setDetectedLang(language);
       setTranslated(t);
-      onAnalysis(t, t.length > 15 ? buildAnalysis(t) : null);
+      // Call real Gemini AI for voice input too
+      const aiResult = await callBackendAI(t);
+      const analysis = (t.length > 15) ? (aiResult ?? buildAnalysis(t)) : null;
+      onAnalysis(t, analysis);
     };
     rec.start();
     recognitionRef.current = rec;
@@ -388,7 +429,7 @@ function ImageTab({ onAnalysis }: { onAnalysis: (text: string, a: AiAnalysis | n
       setPreview(e.target?.result as string);
       setScanning(true);
       setDetected(null);
-      setTimeout(() => {
+      setTimeout(async () => {
         const cats = Object.keys(DEPT_MAP);
         const cat = cats[Math.floor(Math.random() * cats.length)];
         const d = {
@@ -399,7 +440,9 @@ function ImageTab({ onAnalysis }: { onAnalysis: (text: string, a: AiAnalysis | n
         setDetected(d);
         setScanning(false);
         const synth = `${cat} issue detected in uploaded image. Severity ${SEV_MAP[cat]}.`;
-        onAnalysis(synth, buildAnalysis(synth));
+        // Call real Gemini AI with the synthesized description
+        const aiResult = await callBackendAI(synth);
+        onAnalysis(synth, aiResult ?? buildAnalysis(synth));
       }, 2000);
     };
     reader.readAsDataURL(file);

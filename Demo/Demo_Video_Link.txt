@@ -1,34 +1,5 @@
 ResolutionIQ AI — Demo Video
 =============================
 
-Demo Video Link: [Add your recorded demo video URL here]
+Demo Video Link: https://drive.google.com/drive/folders/1vyWor_DjdRVb5hUnjoRI875yGkr6rn-T
 
-Examples:
-  YouTube:  https://youtu.be/your-video-id
-  Google Drive: https://drive.google.com/file/d/your-file-id/view
-  Loom:     https://www.loom.com/share/your-video-id
-
----------------------------------------------------------------
-How to record the demo:
-
-1. Start the backend:
-   cd Source_Code/backend && npm run dev
-
-2. Start the frontend (PowerShell):
-   cd Attached-Assets/Attached-Assets/artifacts/resolutioniq
-   $env:PORT="5173"; $env:BASE_PATH="/"; pnpm run dev
-
-3. Open http://localhost:5173
-
-4. Record the following flows:
-   - Landing page
-   - Login → Select Citizen → Enter Platform
-   - Citizen Portal: view complaint list, click a complaint
-   - File New Complaint: type description, watch AI panel update,
-     pick ward, enter name/email, submit → success screen
-   - Switch to Officer view (/gov): show complaint table, filters
-   - Dashboard (/dashboard): show KPI cards and all charts
-   - Risk Alerts (/risk): show active alerts
-   - Admin (/admin): show users and departments tabs
-
-Recommended tool: OBS Studio (free) or Loom

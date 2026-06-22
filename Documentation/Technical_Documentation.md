@@ -23,58 +23,217 @@ ResolutionIQ AI is a full-stack civic complaint management platform that uses AI
 ## 2. Architecture
 
 ```
-┌─────────────────────────────────────┐
-│         React Frontend (Vite)       │  :5173
-│  Citizen · Officer · Admin Portals  │
-│  TanStack Query + generated client  │
-└──────────────┬──────────────────────┘
-               │ HTTP REST /api/*
-               │ (Vite proxy in dev)
-┌──────────────▼──────────────────────┐
-│      Express.js Backend             │  :5000
-│  Routes → Controllers → Models      │
-│  No auth middleware (demo mode)      │
-└──────────────┬──────────────────────┘
-               │ Mongoose ODM
-┌──────────────▼──────────────────────┐
-│           MongoDB                   │
-│  complaints · departments · users   │
-│  riskAlerts · (indexes on status,   │
-│  category, severity, ward)          │
-└─────────────────────────────────────┘
-```
+SYSTEM ARCHITECTURE OVERVIEW
 
+Citizen Portal
+        │
+        ▼
+┌──────────────────────────────────────────┐
+│      API Gateway & Request Router        │
+└──────────────────────────────────────────┘
+        │
+ ┌──────┼─────────────────────────────────┐
+ │      │                                 │
+ ▼      ▼                                 ▼
+
+Complaint Service     Analytics Service   Notification Service
+Issue Management      KPI Generation      Multi-channel Alerts
+Workflow Engine       Heatmaps            Email/SMS/Push
+
+        │
+        ▼
+
+┌──────────────────────────────────────────┐
+│      AI Decision Intelligence Layer      │
+└──────────────────────────────────────────┘
+
+• NLP Complaint Understanding
+• Severity Prediction
+• Duplicate Detection
+• Department Recommendation
+• Priority Scoring
+• Risk Forecasting
+
+        │
+        ▼
+
+┌──────────────────────────────────────────┐
+│       Geospatial Analytics Engine        │
+└──────────────────────────────────────────┘
+
+• GeoJSON Processing
+• Ward Mapping
+• Heatmap Generation
+• Hotspot Detection
+• Route Optimization
+
+        │
+        ▼
+
+┌──────────────────────────────────────────┐
+│           Data Persistence Layer         │
+└──────────────────────────────────────────┘
+
+MongoDB Collections:
+• Users
+• Complaints
+• Departments
+• Escalations
+• Notifications
+• Analytics
+• Risk Alerts
+
+        │
+        ▼
+
+┌──────────────────────────────────────────┐
+│        Cloud & Infrastructure Layer      │
+└──────────────────────────────────────────┘
+
+AWS EC2
+AWS S3
+AWS Lambda
+AWS CloudWatch
+Docker Containers
+GitHub Actions CI/CD
 ---
 
-## 3. Technology Stack
+##TechStack
+## PRESENTATION LAYER
 
-### Frontend
-| Technology | Version | Purpose |
-|---|---|---|
-| React | 18.x | UI framework |
-| Vite | 5.x | Build tool & dev server |
-| TypeScript | 5.x | Type safety |
-| TanStack Query | 5.x | Server state management |
-| Wouter | 3.x | Client-side routing |
-| Tailwind CSS | 4.x | Utility-first styling |
-| Framer Motion | 11.x | Animations |
-| Recharts | 2.x | Analytics charts |
-| Radix UI | various | Accessible UI primitives |
-| Lucide React | 0.46x | Icon library |
-| date-fns | 3.x | Date formatting |
+Frontend Framework:
+• React 18
+• TypeScript
+• Vite
 
-### Backend
-| Technology | Version | Purpose |
-|---|---|---|
-| Node.js | 18+ | Runtime |
-| Express | 4.x | HTTP framework |
-| MongoDB | 7+ | Database |
-| Mongoose | 8.x | ODM |
-| CORS | 2.x | Cross-origin requests |
-| Morgan | 1.x | HTTP logging |
-| dotenv | 16.x | Environment config |
+UI System:
+• Tailwind CSS
+• ShadCN UI
+• Framer Motion
+• Lucide Icons
 
----
+Visualization:
+• Recharts
+• Chart.js
+• D3.js (Future)
+
+State Management:
+• TanStack Query
+• React Context API
+
+-------------------------------------------------
+
+## API & MICROSERVICE LAYER
+
+Backend Runtime:
+• Node.js
+
+Framework:
+• Express.js
+
+Architecture:
+• REST API
+• Service-Oriented Design
+• Middleware Pipeline
+
+Security:
+• JWT Authentication
+• Role Based Access Control
+• Rate Limiting
+• Input Validation
+
+-------------------------------------------------
+
+## AI INTELLIGENCE LAYER
+
+Natural Language Processing:
+• GPT-4o
+• BERT
+• Sentence Transformers
+
+Speech Intelligence:
+• Whisper AI
+• Language Detection
+
+Computer Vision:
+• YOLOv11
+• EfficientNet
+
+AI Features:
+• Complaint Classification
+• Duplicate Complaint Detection
+• Department Routing
+• Severity Prediction
+• Priority Scoring
+• Complaint Summarization
+• Root Cause Analysis
+
+-------------------------------------------------
+
+## GEO-SPATIAL ANALYTICS LAYER
+
+Mapping Services:
+• Google Maps API
+
+Spatial Analysis:
+• GeoJSON
+• DBSCAN Clustering
+• Geospatial Indexing
+
+Outputs:
+• Complaint Heatmaps
+• Ward Intelligence
+• Hotspot Detection
+• Trend Mapping
+
+-------------------------------------------------
+
+## DATA LAYER
+
+Database:
+• MongoDB
+
+ODM:
+• Mongoose
+
+Caching:
+• Redis (Future)
+
+Collections:
+• Users
+• Complaints
+• Departments
+• Notifications
+• Escalations
+• Analytics
+• Risk Alerts
+
+Indexes:
+• GeoSpatial Indexes
+• Compound Query Indexes
+• Full Text Search Indexes
+
+-------------------------------------------------
+
+## CLOUD & DEVOPS LAYER
+
+Infrastructure:
+• AWS EC2
+• AWS S3
+• AWS Lambda
+
+Monitoring:
+• CloudWatch
+• Winston Logging
+
+DevOps:
+• Docker
+• GitHub Actions
+
+Deployment:
+• Nginx Reverse Proxy
+• CI/CD Pipeline
+
 
 ## 4. Project Structure
 

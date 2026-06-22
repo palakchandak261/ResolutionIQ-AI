@@ -4,6 +4,7 @@ const departmentRoutes = require("./departmentRoutes");
 const analyticsRoutes = require("./analyticsRoutes");
 const riskRoutes = require("./riskRoutes");
 const userRoutes = require("./userRoutes");
+const aiRoutes = require("./aiRoutes");
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use("/departments", departmentRoutes);
 router.use("/analytics", analyticsRoutes);
 router.use("/risk", riskRoutes);
 router.use("/users", userRoutes);
+router.use("/ai", aiRoutes);
 
 module.exports = router;
