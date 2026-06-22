@@ -21,7 +21,8 @@ const EVENT_ICONS: Record<string, React.ReactNode> = {
 
 export default function GovComplaintDetail() {
   const [, params] = useRoute("/gov/complaint/:id");
-  const id = parseInt(params?.id ?? "0", 10);
+  // MongoDB returns string IDs — cast to any so the typed client accepts it
+  const id = (params?.id ?? "") as any;
   const qc = useQueryClient();
   const { toast } = useToast();
   const [, navigate] = useLocation();

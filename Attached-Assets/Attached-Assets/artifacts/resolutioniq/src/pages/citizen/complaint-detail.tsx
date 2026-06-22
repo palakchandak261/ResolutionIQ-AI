@@ -18,7 +18,8 @@ const EVENT_ICONS: Record<string, React.ReactNode> = {
 
 export default function CitizenComplaintDetail() {
   const [, params] = useRoute("/citizen/complaint/:id");
-  const id = parseInt(params?.id ?? "0", 10);
+  // MongoDB returns string IDs — cast to any so the typed client accepts it
+  const id = (params?.id ?? "") as any;
   const qc = useQueryClient();
 
   const { data: complaint, isLoading } = useGetComplaint(id, { query: { enabled: !!id } });
