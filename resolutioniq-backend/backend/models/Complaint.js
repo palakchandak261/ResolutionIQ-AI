@@ -42,6 +42,10 @@ const complaintSchema = new mongoose.Schema(
     estimatedResolutionDays: { type: Number, default: 7 },
     resolvedAt: { type: Date, default: null },
 
+    isAnonymous: {
+    type: Boolean,
+    default: false
+  },
     // Timeline
     timeline: [timelineEventSchema],
   },

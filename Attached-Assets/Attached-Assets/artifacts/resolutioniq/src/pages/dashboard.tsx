@@ -48,9 +48,15 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Civic Intelligence Dashboard</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">Real-time analytics across all wards and departments</p>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Civic Intelligence Dashboard</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">Real-time analytics across all wards and departments</p>
+        </div>
+        <a href="http://localhost:5000/api/analytics/export" download className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2m0 0v-8m0 8l-6-4m6 4l6-4" /></svg>
+          Export CSV Report
+        </a>
       </div>
 
       {/* KPI grid */}

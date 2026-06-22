@@ -24,6 +24,10 @@ const SEVERITY_MAP = {
 // Format a Mongoose document to match frontend Complaint schema
 function formatComplaint(c) {
   const obj = c.toObject ? c.toObject() : c;
+  
+  // Feature: Incognito Mode Check
+  const isAnon = obj.isAnonymous === true;
+
   return {
     id: obj._id.toString(),
     title: obj.title,
@@ -35,8 +39,10 @@ function formatComplaint(c) {
     priority: obj.priority || "Normal",
     ward: obj.ward,
     location: obj.location,
-    citizenName: obj.citizenName,
-    citizenEmail: obj.citizenEmail,
+    // Mask identity if filed anonymously
+    citizenName: isAnon ? "Anonymous Citizen" : obj.citizenName,
+    citizenEmail: isAnon ? "Hidden" : obj.citizenEmail,
+    isAnonymous: isAnon,
     assignedTo: obj.assignedTo || null,
     imageUrl: obj.imageUrl || null,
     votes: obj.votes || 0,
@@ -109,7 +115,7 @@ const listComplaints = asyncHandler(async (req, res) => {
 
 // @route POST /api/complaints
 const createComplaint = asyncHandler(async (req, res) => {
-  const { title, description, category, ward, location, citizenName, citizenEmail, imageUrl } =
+  const { title, description, category, ward, location, citizenName, citizenEmail, imageUrl, isAnonymous } =
     req.body;
 
   if (!title || !description || !category) {
@@ -122,6 +128,9 @@ const createComplaint = asyncHandler(async (req, res) => {
   const aiSummary = `AI classified this as a ${category} issue in ${ward || "the area"}. Routed to ${department} with ${severity.toLowerCase()} severity based on historical patterns.`;
   const estimatedResolutionDays = severity === "Critical" ? 3 : severity === "High" ? 5 : 7;
 
+  // Determine display name for timeline based on anonymity
+  const displayActor = isAnonymous ? "Anonymous Citizen" : (citizenName || "Anonymous");
+
   const complaint = await Complaint.create({
     title,
     description,
@@ -133,14 +142,15 @@ const createComplaint = asyncHandler(async (req, res) => {
     citizenName: citizenName || "Anonymous",
     citizenEmail: citizenEmail || "",
     imageUrl: imageUrl || null,
+    isAnonymous: isAnonymous || false,
     aiConfidence: confidence,
     aiSummary,
     estimatedResolutionDays,
     timeline: [
       {
         eventType: "submitted",
-        description: `Complaint submitted by ${citizenName || "Anonymous"}`,
-        actor: citizenName || "Anonymous",
+        description: `Complaint submitted by ${displayActor}`,
+        actor: displayActor,
       },
       {
         eventType: "ai_routed",

@@ -7,6 +7,7 @@ const {
   resolutionTrends,
   slaBreachRisk,
   departmentWorkload,
+  exportComplaintsCSV,
 } = require("../controllers/analyticsController");
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router.get("/ward-heatmap", wardHeatmap);
 router.get("/resolution-trends", resolutionTrends);
 router.get("/sla-breach-risk", slaBreachRisk);
 router.get("/department-workload", departmentWorkload);
+router.get("/export", exportComplaintsCSV);
 
 module.exports = router;

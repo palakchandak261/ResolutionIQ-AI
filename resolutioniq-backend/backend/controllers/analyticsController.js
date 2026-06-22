@@ -165,6 +165,41 @@ const departmentWorkload = asyncHandler(async (_req, res) => {
   res.json(workload);
 });
 
+// @route GET /api/analytics/export
+// @desc Export complaints as CSV for officials
+const exportComplaintsCSV = asyncHandler(async (req, res) => {
+  try {
+    const complaints = await Complaint.find({}).populate('department');
+    
+    // 1. Define the CSV Header
+    const csvRows = ['Ticket ID,Title,Status,Severity,Department,Submitted On,Ward,Votes'];
+
+    // 2. Map data to rows (handling commas in text with quotes)
+    complaints.forEach(c => {
+      const id = c._id.toString();
+      // Replace quotes with double quotes to prevent CSV breaking
+      const title = `"${c.title.replace(/"/g, '""')}"`; 
+      const status = c.status;
+      const severity = c.severity;
+      const department = c.department ? c.department.name : 'Unassigned';
+      const date = new Date(c.createdAt).toLocaleDateString();
+      const ward = c.ward || 'Unknown';
+      const votes = c.votes || 0;
+
+      csvRows.push(`${id},${title},${status},${severity},${department},${date},${ward},${votes}`);
+    });
+
+    // 3. Set headers to trigger a file download
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="resolutioniq_complaints_report_' + new Date().toISOString().split('T')[0] + '.csv"');
+    
+    // 4. Send the CSV string
+    res.status(200).send(csvRows.join('\n'));
+  } catch (error) {
+    res.status(500).json({ message: "Failed to generate CSV", error: error.message });
+  }
+});
+
 module.exports = {
   overview,
   categoryBreakdown,
@@ -173,4 +208,5 @@ module.exports = {
   resolutionTrends,
   slaBreachRisk,
   departmentWorkload,
+  exportComplaintsCSV,
 };

@@ -752,6 +752,7 @@ export default function NewComplaint() {
   const [citizenName, setCitizenName] = useState("");
   const [citizenEmail, setCitizenEmail] = useState("");
   const [location, setLocation] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [duplicate, setDuplicate] = useState<DuplicateResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -796,7 +797,8 @@ export default function NewComplaint() {
   }
 
   function handleSubmit() {
-    if (!analysis || !ward || !citizenName || !citizenEmail) return;
+    if (!analysis || !ward) return;
+    if (!isAnonymous && (!citizenName || !citizenEmail)) return;
     setSubmitting(true);
     createMutation.mutate({
       data: {
@@ -805,9 +807,10 @@ export default function NewComplaint() {
         category: analysis.issueType,
         ward,
         location: location || `${ward} — AI Location`,
-        citizenName,
-        citizenEmail,
+        citizenName: isAnonymous ? "Anonymous Citizen" : citizenName,
+        citizenEmail: isAnonymous ? "Hidden" : citizenEmail,
         status: "Pending",
+        isAnonymous,
       },
     });
   }
@@ -934,12 +937,26 @@ export default function NewComplaint() {
                   <div className="grid sm:grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <label className="text-xs text-white/50 font-mono uppercase tracking-wider">Full Name</label>
-                      <Input className="bg-white/5 border-white/15 text-white placeholder:text-white/30 focus:border-sky-500/50" placeholder="Your name" value={citizenName} onChange={e => setCitizenName(e.target.value)} />
+                      <Input disabled={isAnonymous} className="bg-white/5 border-white/15 text-white placeholder:text-white/30 focus:border-sky-500/50 disabled:opacity-50 disabled:cursor-not-allowed" placeholder="Your name" value={citizenName} onChange={e => setCitizenName(e.target.value)} />
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-xs text-white/50 font-mono uppercase tracking-wider">Email Address</label>
-                      <Input type="email" className="bg-white/5 border-white/15 text-white placeholder:text-white/30 focus:border-sky-500/50" placeholder="For status updates" value={citizenEmail} onChange={e => setCitizenEmail(e.target.value)} />
+                      <Input type="email" disabled={isAnonymous} className="bg-white/5 border-white/15 text-white placeholder:text-white/30 focus:border-sky-500/50 disabled:opacity-50 disabled:cursor-not-allowed" placeholder="For status updates" value={citizenEmail} onChange={e => setCitizenEmail(e.target.value)} />
                     </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+                    <input 
+                      type="checkbox" 
+                      id="anonymous-toggle" 
+                      checked={isAnonymous}
+                      onChange={(e) => setIsAnonymous(e.target.checked)}
+                      className="w-4 h-4 rounded border-white/30 bg-white/5 text-sky-500 cursor-pointer"
+                    />
+                    <label htmlFor="anonymous-toggle" className="text-sm text-white/70 cursor-pointer flex-1">
+                      <span className="font-semibold text-white">File Anonymously</span>
+                      <span className="text-xs text-white/50 block mt-0.5">Hide my name from government officials</span>
+                    </label>
+                    <Shield className="w-4 h-4 text-sky-400 shrink-0" />
                   </div>
                 </GlassCard>
 
@@ -950,7 +967,7 @@ export default function NewComplaint() {
                     <X className="w-4 h-4" /> Back
                   </Button>
                   <Button className="flex-1 h-11 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-white border-0 font-semibold gap-2 shadow-lg shadow-sky-500/25"
-                    disabled={!ward || !citizenName || !citizenEmail}
+                    disabled={!ward || (!isAnonymous && (!citizenName || !citizenEmail))}
                     onClick={() => setAnalysisStep(2)}
                   >
                     Review & Submit <ArrowRight className="w-4 h-4" />
