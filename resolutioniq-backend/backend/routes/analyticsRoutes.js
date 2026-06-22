@@ -1,21 +1,22 @@
 const express = require("express");
 const {
   overview,
-  heatmap,
-  wardAnalytics,
-  departmentLoad,
-  slaMonitor,
+  categoryBreakdown,
+  severityBreakdown,
+  wardHeatmap,
+  resolutionTrends,
+  slaBreachRisk,
+  departmentWorkload,
 } = require("../controllers/analyticsController");
-const { protect, authorize } = require("../middleware/auth");
-const { ROLES } = require("../config/constants");
 
 const router = express.Router();
 
-router.use(protect, authorize(ROLES.OFFICER, ROLES.ADMIN));
 router.get("/overview", overview);
-router.get("/heatmap", heatmap);
-router.get("/wards", wardAnalytics);
-router.get("/department-load", departmentLoad);
-router.get("/sla", slaMonitor);
+router.get("/category-breakdown", categoryBreakdown);
+router.get("/severity-breakdown", severityBreakdown);
+router.get("/ward-heatmap", wardHeatmap);
+router.get("/resolution-trends", resolutionTrends);
+router.get("/sla-breach-risk", slaBreachRisk);
+router.get("/department-workload", departmentWorkload);
 
 module.exports = router;

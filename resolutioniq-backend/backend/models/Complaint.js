@@ -1,103 +1,58 @@
 const mongoose = require("mongoose");
-const {
-  ISSUE_TYPES,
-  SEVERITY,
-  COMPLAINT_STATUS,
-} = require("../config/constants");
 
 const timelineEventSchema = new mongoose.Schema(
   {
-    status: { type: String, enum: Object.values(COMPLAINT_STATUS) },
-    note: { type: String },
-    actor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    eventType: { type: String, default: "status_changed" },
+    description: { type: String },
+    actor: { type: String, default: "System" },
     at: { type: Date, default: Date.now },
   },
-  { _id: false }
+  { _id: true }
 );
 
 const complaintSchema = new mongoose.Schema(
   {
-    referenceId: { type: String, required: true, unique: true }, // e.g. RIQ-2026-000123
-    citizen: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-
-    // Raw input
-    rawDescription: { type: String, required: true },
-    inputMode: {
-      type: String,
-      enum: ["text", "voice", "image", "voice+image"],
-      default: "text",
-    },
-    originalLanguage: { type: String, default: "en" },
-
-    // AI generated formal complaint
-    aiGeneratedComplaint: { type: String },
-    aiSummary: { type: String },
-
-    // Classification
-    issueType: {
-      type: String,
-      enum: Object.values(ISSUE_TYPES),
-      default: ISSUE_TYPES.OTHER,
-    },
-    routingConfidence: { type: Number, min: 0, max: 1 },
-    severity: {
-      type: String,
-      enum: Object.values(SEVERITY),
-      default: SEVERITY.MEDIUM,
-    },
-    severityConfidence: { type: Number, min: 0, max: 1 },
-
-    // Media
-    images: [{ url: String, geminiAnalysis: mongoose.Schema.Types.Mixed }],
-    voiceRecording: {
-      url: String,
-      transcript: String,
-      detectedLanguage: String,
-      translatedText: String,
-    },
-
-    // Location
-    location: {
-      type: { type: String, enum: ["Point"], default: "Point" },
-      coordinates: { type: [Number], required: true }, // [lng, lat]
-    },
-    address: { type: String },
-    ward: { type: String },
-
-    // Routing / assignment
-    department: { type: mongoose.Schema.Types.ObjectId, ref: "Department" },
-    assignedOfficer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-
+    // Frontend-facing flat fields
+    title: { type: String, required: true, trim: true },
+    description: { type: String, required: true },
+    category: { type: String, required: true, default: "Other" },
+    department: { type: String, default: "General Administration" },
     status: {
       type: String,
-      enum: Object.values(COMPLAINT_STATUS),
-      default: COMPLAINT_STATUS.SUBMITTED,
+      enum: ["Pending", "In Progress", "Resolved", "Escalated", "Rejected"],
+      default: "Pending",
     },
-    slaDeadline: { type: Date },
+    severity: {
+      type: String,
+      enum: ["Low", "Medium", "High", "Critical"],
+      default: "Medium",
+    },
+    priority: { type: String, default: "Normal" },
+    ward: { type: String, default: "" },
+    location: { type: String, default: "" },
+    citizenName: { type: String, default: "Anonymous" },
+    citizenEmail: { type: String, default: "" },
+    assignedTo: { type: String, default: null },
+    imageUrl: { type: String, default: null },
+    votes: { type: Number, default: 0 },
+    aiConfidence: { type: Number, default: 0.9 },
+    aiSummary: { type: String, default: "" },
+    isDuplicate: { type: Boolean, default: false },
+    duplicateOf: { type: Number, default: null },
+    estimatedResolutionDays: { type: Number, default: 7 },
+    resolvedAt: { type: Date, default: null },
 
-    // Co-voting / duplicate handling
-    upvoteCount: { type: Number, default: 0 },
-    isDuplicateOf: { type: mongoose.Schema.Types.ObjectId, ref: "Complaint", default: null },
-    duplicateCandidates: [
-      {
-        complaint: { type: mongoose.Schema.Types.ObjectId, ref: "Complaint" },
-        distanceMeters: Number,
-        similarityScore: Number,
-      },
-    ],
-
+    // Timeline
     timeline: [timelineEventSchema],
-
-    resolvedAt: { type: Date },
-    resolutionNote: { type: String },
-    citizenRating: { type: Number, min: 1, max: 5 },
   },
   { timestamps: true }
 );
 
-complaintSchema.index({ location: "2dsphere" });
-complaintSchema.index({ issueType: 1, status: 1 });
-complaintSchema.index({ department: 1, status: 1 });
+complaintSchema.index({ status: 1 });
+complaintSchema.index({ category: 1 });
+complaintSchema.index({ severity: 1 });
+complaintSchema.index({ department: 1 });
+complaintSchema.index({ ward: 1 });
 complaintSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model("Complaint", complaintSchema);

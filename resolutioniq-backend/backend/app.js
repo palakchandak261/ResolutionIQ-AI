@@ -1,32 +1,41 @@
 const express = require("express");
 const cors = require("cors");
-const helmet = require("helmet");
 const morgan = require("morgan");
 const path = require("path");
-const rateLimit = require("express-rate-limit");
 
 const routes = require("./routes");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
 
-app.use(helmet({ crossOriginResourcePolicy: false }));
+// CORS — allow the Vite dev server and any configured client URL
+const allowedOrigins = [
+  process.env.CLIENT_URL || "http://localhost:5173",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin: (origin, cb) => {
+      // Allow requests with no origin (curl, Postman, mobile apps)
+      if (!origin) return cb(null, true);
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      cb(new Error(`CORS blocked: ${origin}`));
+    },
     credentials: true,
   })
 );
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
-const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 500 });
-app.use("/api", apiLimiter);
-
-// Serve uploaded images/voice recordings
+// Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// All API routes under /api
 app.use("/api", routes);
 
 app.use(notFound);

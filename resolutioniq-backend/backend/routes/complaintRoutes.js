@@ -1,32 +1,29 @@
 const express = require("express");
 const {
-  createComplaint,
+  getComplaintsSummary,
+  getRecentComplaints,
   listComplaints,
+  createComplaint,
   getComplaint,
-  updateStatus,
-  assignOfficer,
+  updateComplaint,
   voteComplaint,
+  getComplaintTimeline,
 } = require("../controllers/complaintController");
-const { protect, authorize } = require("../middleware/auth");
-const upload = require("../middleware/upload");
-const { ROLES } = require("../config/constants");
 
 const router = express.Router();
 
-router.use(protect);
+// Stats routes — must be before /:id
+router.get("/stats/summary", getComplaintsSummary);
+router.get("/stats/recent", getRecentComplaints);
 
-router.post(
-  "/",
-  upload.fields([
-    { name: "image", maxCount: 1 },
-    { name: "voice", maxCount: 1 },
-  ]),
-  createComplaint
-);
+// CRUD
 router.get("/", listComplaints);
+router.post("/", createComplaint);
 router.get("/:id", getComplaint);
-router.patch("/:id/status", authorize(ROLES.OFFICER, ROLES.ADMIN), updateStatus);
-router.patch("/:id/assign", authorize(ROLES.OFFICER, ROLES.ADMIN), assignOfficer);
+router.patch("/:id", updateComplaint);
+
+// Actions
 router.post("/:id/vote", voteComplaint);
+router.get("/:id/timeline", getComplaintTimeline);
 
 module.exports = router;

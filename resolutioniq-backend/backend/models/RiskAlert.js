@@ -1,22 +1,23 @@
 const mongoose = require("mongoose");
 
-// Predicted/forecasted risk zones for the heatmap analytics module.
 const riskAlertSchema = new mongoose.Schema(
   {
-    ward: { type: String },
-    location: {
-      type: { type: String, enum: ["Point"], default: "Point" },
-      coordinates: { type: [Number] },
+    title: { type: String, required: true, trim: true },
+    description: { type: String, default: "" },
+    riskType: { type: String, default: "Infrastructure" },
+    location: { type: String, default: "" },
+    ward: { type: String, default: "" },
+    severity: {
+      type: String,
+      enum: ["Low", "Medium", "High", "Critical"],
+      default: "Medium",
     },
-    riskType: { type: String }, // e.g. "infrastructure_failure", "flooding"
-    riskScore: { type: Number, min: 0, max: 1 },
-    basis: { type: String }, // human readable explanation
-    sourceCorrelation: { type: mongoose.Schema.Types.ObjectId, ref: "IssueCorrelation" },
-    status: { type: String, enum: ["active", "acknowledged", "resolved"], default: "active" },
+    status: { type: String, enum: ["Active", "Acknowledged", "Resolved"], default: "Active" },
+    confidence: { type: Number, min: 0, max: 1, default: 0.8 },
+    relatedComplaintIds: [{ type: Number }],
+    resolvedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
-
-riskAlertSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model("RiskAlert", riskAlertSchema);
