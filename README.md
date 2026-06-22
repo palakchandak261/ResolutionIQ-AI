@@ -53,7 +53,7 @@ ResolutionIQ-AI/
 
 ### 1 — Backend Setup
 ```bash
-cd Source_Code/backend
+cd resolutioniq-backend
 npm install
 cp .env.example .env      # then edit MONGODB_URI
 npm run seed              # populate demo data (run once)
